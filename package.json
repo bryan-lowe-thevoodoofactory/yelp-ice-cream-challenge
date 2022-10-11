@@ -1,0 +1,14 @@
+{
+  "name": "yelp-ice-cream-challenge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "backend/server.js",
+  "dependencies": {
+    "concurrently": "^5.3.0"
+  },
+  "scripts": {
+    "start": "concurrently \"cd backend && npm run watch\" \"cd frontend && npm start\"",
+    "install": "cd backend && npm i && cd ../frontend && yarn install",
+    "build": "cd frontend && npm run build"
+  }
+}
