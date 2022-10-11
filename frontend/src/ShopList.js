@@ -2,34 +2,51 @@ import React, { useEffect, useState } from 'react';
 import { Card, Image } from 'semantic-ui-react';
 
 export default function ShopList() {
-
     const [shopList, setShopList] = useState([]);
 
     useEffect(() => {
         const fetchYelpData = async () => {
-          const shopData = await fetch("/api/get-shop-list");
-          console.log("Shop Data", shopData);
+            // gather ice cream businesses
+            const response = await fetch("http://localhost:5000/api/get-shop-list");
+            const shopData = await response.json();
+        
+            // Validate and set data
+            if (Array.isArray(shopData) && shopData.length) {
+                setShopList(shopData);
+            }
         }
       
         fetchYelpData().catch(console.error);
-      }, [])
+    }, []);
 
-    return (
-        <Card.Group>
-            <Card>
-                <Image src='https://s3-media2.fl.yelpcdn.com/bphoto/bSzSbY0bSSMkLhX7qc7iwg/o.jpg' wrapped ui={false} />
+    const renderShopList = () => (
+        shopList.map((shop, index) => (
+            <Card key={index}>
+                <Image src={shop.image} wrapped ui={false} />
                 <Card.Content>
-                    <Card.Header>Sweet Charlie's</Card.Header>
+                    <Card.Header>{shop.businessName}</Card.Header>
                     <Card.Meta>
-                        <p>580 E Crossville Rd</p>
-                        <p>Roswell, GA 30075</p>
+                        <p>{shop.address1} {shop.address2}</p>
+                        <p>{shop.city}, {shop.state} {shop.zipCode}</p>
                     </Card.Meta>
                     <Card.Description>
-                        <p>It's smells great as soon as you walk in. Everyone is so friendly. This place is an whole experience from picking your ice cream, to watching them make it...</p>
-                        <p>Dej C.</p>
+                        <p>{shop.review}</p>
+                        <p>{shop.reviewer}</p>
                     </Card.Description>
                 </Card.Content>
             </Card>
+        ))
+    );
+
+    return (
+        <Card.Group>
+            {shopList.length ? renderShopList() : (
+                <Card>
+                    <Card.Content>
+                        <Card.Header>Cannot Retrieve Data. Check backend/server.js and ensure the API has been added.</Card.Header>
+                    </Card.Content>
+                </Card>
+            )}
         </Card.Group>
     );
 }
