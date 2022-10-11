@@ -43,7 +43,7 @@ export default function ShopList() {
             {shopList.length ? renderShopList() : (
                 <Card>
                     <Card.Content>
-                        <Card.Header>Cannot Retrieve Data. Check backend/server.js and ensure the API has been added.</Card.Header>
+                        <Card.Header>Cannot Retrieve Data. Check backend/config.js and ensure the API has been added.</Card.Header>
                     </Card.Content>
                 </Card>
             )}
